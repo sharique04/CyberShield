@@ -26,6 +26,9 @@ return (
         <Link to="/my-incidents" className="btn-primary" style={{ textDecoration: 'none', textAlign: 'center' }}>
           📋 My Incidents
         </Link>
+        <Link to="/manage-incidents" className="btn-primary" style={{ textDecoration: 'none', textAlign: 'center' }}>
+  🛠️ Manage Incidents
+</Link>
       </div>
       <button onClick={handleLogout} className="btn-logout" style={{ marginTop: '20px' }}>
         Logout
