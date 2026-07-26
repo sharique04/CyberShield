@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -14,12 +14,22 @@ function Dashboard() {
     return null;
   }
 
-  return (
+return (
     <div className="dashboard-container">
       <h2>Welcome, {user.name} 👋</h2>
       <p>Email: {user.email}</p>
       <p>Role: {user.role}</p>
-      <button onClick={handleLogout} className="btn-logout">Logout</button>
+      <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
+        <Link to="/report-incident" className="btn-primary" style={{ textDecoration: 'none', textAlign: 'center' }}>
+          🚨 Report Incident
+        </Link>
+        <Link to="/my-incidents" className="btn-primary" style={{ textDecoration: 'none', textAlign: 'center' }}>
+          📋 My Incidents
+        </Link>
+      </div>
+      <button onClick={handleLogout} className="btn-logout" style={{ marginTop: '20px' }}>
+        Logout
+      </button>
     </div>
   );
 }
