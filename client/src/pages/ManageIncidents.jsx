@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import API from '../api/axios';
+import Navbar from '../components/Navbar';
 
 function ManageIncidents() {
   const [incidents, setIncidents] = useState([]);
@@ -48,89 +48,62 @@ function ManageIncidents() {
     filterStatus === 'All' ? incidents : incidents.filter((inc) => inc.status === filterStatus);
 
   return (
-    <div className="dashboard-container" style={{ maxWidth: '900px' }}>
-      <h2>🛠️ Manage All Incidents</h2>
-      {error && <p className="error-message">{error}</p>}
+    <>
+      <Navbar />
+      <div className="dashboard-container" style={{ maxWidth: '900px' }}>
+        <h2>🛠️ Manage All Incidents</h2>
+        {error && <p className="error-message">{error}</p>}
 
-      <div style={{ marginBottom: '16px' }}>
-        <label style={{ marginRight: '8px', fontWeight: 600 }}>Filter by status:</label>
-        <select
-          value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value)}
-          style={{ padding: '8px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-        >
-          <option>All</option>
-          <option>Open</option>
-          <option>In Progress</option>
-          <option>Resolved</option>
-        </select>
-      </div>
-
-      {filteredIncidents.length === 0 && !error && <p>No incidents found.</p>}
-
-      {filteredIncidents.map((incident) => (
-        <div
-          key={incident._id}
-          style={{
-            border: '1px solid #e2e8f0',
-            borderRadius: '8px',
-            padding: '16px',
-            marginBottom: '12px',
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h3 style={{ margin: 0 }}>{incident.title}</h3>
-            <span
-              style={{
-                background: severityColor[incident.severity],
-                color: 'white',
-                padding: '4px 10px',
-                borderRadius: '12px',
-                fontSize: '12px',
-                fontWeight: 600,
-              }}
-            >
-              {incident.severity}
-            </span>
-          </div>
-          <p style={{ margin: '8px 0', color: '#475569' }}>{incident.description}</p>
-          <p style={{ fontSize: '13px', color: '#64748b' }}>
-            Category: {incident.category} | Reported by: {incident.reportedBy?.name} ({incident.reportedBy?.email})
-          </p>
-          <p style={{ fontSize: '13px', color: '#64748b' }}>
-            Reported: {new Date(incident.createdAt).toLocaleString()}
-          </p>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
-            <span
-              style={{
-                background: statusColor[incident.status],
-                color: 'white',
-                padding: '4px 10px',
-                borderRadius: '12px',
-                fontSize: '12px',
-                fontWeight: 600,
-              }}
-            >
-              {incident.status}
-            </span>
-            <select
-              value={incident.status}
-              onChange={(e) => handleStatusChange(incident._id, e.target.value)}
-              style={{ padding: '6px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-            >
-              <option>Open</option>
-              <option>In Progress</option>
-              <option>Resolved</option>
-            </select>
-          </div>
+        <div style={{ marginBottom: '16px' }}>
+          <label style={{ marginRight: '8px', fontWeight: 600, color: '#94a3b8' }}>Filter by status:</label>
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            style={{ padding: '8px', borderRadius: '6px', border: '1px solid #334155', background: '#0f172a', color: '#e2e8f0' }}
+          >
+            <option>All</option>
+            <option>Open</option>
+            <option>In Progress</option>
+            <option>Resolved</option>
+          </select>
         </div>
-      ))}
 
-      <p className="auth-footer">
-        <Link to="/dashboard">← Back to Dashboard</Link>
-      </p>
-    </div>
+        {filteredIncidents.length === 0 && !error && <p>No incidents found.</p>}
+
+        {filteredIncidents.map((incident) => (
+          <div key={incident._id} className="incident-card">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3 style={{ margin: 0 }}>{incident.title}</h3>
+              <span className="badge" style={{ background: severityColor[incident.severity] }}>
+                {incident.severity}
+              </span>
+            </div>
+            <p style={{ margin: '8px 0', color: '#94a3b8' }}>{incident.description}</p>
+            <p style={{ fontSize: '13px', color: '#64748b' }}>
+              Category: {incident.category} | Reported by: {incident.reportedBy?.name} ({incident.reportedBy?.email})
+            </p>
+            <p style={{ fontSize: '13px', color: '#64748b' }}>
+              Reported: {new Date(incident.createdAt).toLocaleString()}
+            </p>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
+              <span className="badge" style={{ background: statusColor[incident.status] }}>
+                {incident.status}
+              </span>
+              <select
+                value={incident.status}
+                onChange={(e) => handleStatusChange(incident._id, e.target.value)}
+                style={{ padding: '6px', borderRadius: '6px', border: '1px solid #334155', background: '#0f172a', color: '#e2e8f0' }}
+              >
+                <option>Open</option>
+                <option>In Progress</option>
+                <option>Resolved</option>
+              </select>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
   );
 }
 
